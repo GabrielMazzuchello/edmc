@@ -1,6 +1,6 @@
 import React from "react";
 import { read, utils } from "xlsx";
-import "../styles.css";
+import "../styles/main.css";
 
 const FileUploader = ({ onUploadSuccess }) => {
   const processJSONData = (jsonData) => {

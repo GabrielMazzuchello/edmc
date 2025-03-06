@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles.css";
+import "../styles/main.css";
 
 const InventoryTable = ({ items, onSubtract, onReset, onRemove }) => {
   const handleKeyDown = (e, item) => {

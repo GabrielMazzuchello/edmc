@@ -1,9 +1,9 @@
 import { useState } from "react";
-import FileUploader from "../common/FileUploader";
-import InventoryTable from "../common/InventoryTable";
-import "./styles.css";
+import FileUploader from "../components/FileUploader";
+import InventoryTable from "../components/InventoryTable";
+import "../styles/main.css";
 
-function App() {
+const InventoryPage = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
 
@@ -30,8 +30,6 @@ function App() {
 
   return (
     <div className="page-container">
-      <h2>Gestão de Estoque</h2>
-
       <FileUploader
         onUploadSuccess={(data) => {
           setItems(data);
@@ -51,6 +49,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default InventoryPage;
