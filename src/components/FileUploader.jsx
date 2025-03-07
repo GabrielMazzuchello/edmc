@@ -1,11 +1,13 @@
 import React from "react";
 import { read, utils } from "xlsx";
+import { collection, addDoc } from "firebase/firestore";
+import { db, auth } from "../services/firebase";
 import "../styles/main.css";
 
-const FileUploader = ({ onUploadSuccess }) => {
+const FileUploader = ({ onInventoryCreated }) => {
   const processJSONData = (jsonData) => {
     return Object.entries(jsonData).map(([material, valor], index) => ({
-      id: index + 1,
+      id: `${Date.now()}-${index}`,
       material,
       quantidade: Number(valor),
       restante: Number(valor),
@@ -18,7 +20,7 @@ const FileUploader = ({ onUploadSuccess }) => {
       .slice(1)
       .filter((row) => row.length >= 2)
       .map((row, index) => ({
-        id: index + 1,
+        id: `${Date.now()}-${index}`,
         material: row[headers.indexOf("materiais")] || "Sem nome",
         quantidade: Number(row[headers.indexOf("valor")]) || 0,
         restante: Number(row[headers.indexOf("valor")]) || 0,
@@ -29,7 +31,7 @@ const FileUploader = ({ onUploadSuccess }) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
         let processedData;
         if (file.name.endsWith(".xlsx")) {
@@ -41,7 +43,17 @@ const FileUploader = ({ onUploadSuccess }) => {
           const jsonData = JSON.parse(e.target.result);
           processedData = processJSONData(jsonData);
         }
-        onUploadSuccess(processedData);
+
+        // Adiciona o dono do inventário
+        const inventoryRef = await addDoc(collection(db, "inventories"), {
+          items: processedData,
+          owner: auth.currentUser.uid,
+          collaborators: [auth.currentUser.uid],
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+
+        onInventoryCreated(inventoryRef.id);
       } catch (error) {
         console.error("Erro no processamento:", error);
       }

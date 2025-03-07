@@ -1,52 +1,32 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import FileUploader from "../components/FileUploader";
 import InventoryTable from "../components/InventoryTable";
+import SyncManager from "../components/SyncManager";
 import "../styles/main.css";
 
 const InventoryPage = () => {
-  const [items, setItems] = useState([]);
+  const { inventoryId } = useParams();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
-  const handleSubtract = (id, value) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? { ...item, restante: Math.max(0, item.restante - value) }
-          : item
-      )
-    );
-  };
-  const handleReset = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, restante: 0 } : item
-      )
-    );
-  };
-
-  const handleRemove = (id) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const handleInventoryCreated = (newInventoryId) => {
+    navigate(`/inventory/${newInventoryId}`);
   };
 
   return (
     <div className="page-container">
-      <FileUploader
-        onUploadSuccess={(data) => {
-          setItems(data);
-          setError("");
-        }}
-      />
+    
+      {!inventoryId ? (
+        <FileUploader onInventoryCreated={handleInventoryCreated} />
+      ) : (
+        <>
+          <InventoryTable inventoryId={inventoryId} />
+          <SyncManager inventoryId={inventoryId} />
+        </>
+      )}
 
       {error && <div className="error">{error}</div>}
-
-      {items.length > 0 && (
-        <InventoryTable
-          items={items}
-          onSubtract={handleSubtract}
-          onReset={handleReset}
-          onRemove={handleRemove}
-        />
-      )}
     </div>
   );
 };
