@@ -4,15 +4,15 @@
   "version": "0.0.0",
   "type": "module",
 
+  "homepage": "https://gabrielmazzuchello.github.io/EDMC",
   "scripts": {
-    "predeploy": "vite build",
+    "build": "vite build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
-    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "homepage": "https://gabrielmazzuchello.github.io/edmc/",
 
   "dependencies": {
     "@emotion/react": "^11.14.0",

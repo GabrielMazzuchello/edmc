@@ -3,5 +3,9 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/EDMC/' // Nome exato do repositório
+  base: '/EDMC/', // Deve corresponder EXATAMENTE ao nome do repositório
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets'
+  }
 })
