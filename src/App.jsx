@@ -1,21 +1,25 @@
-import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/common/Navbar'
-import HomePage from './pages/HomePage'
-import InventoryPage from './pages/InventoryPage'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { AuthProvider } from '../context/AuthContext';
+import InventoryPage from "./pages/InventoryPage";
+import SyncManager from "./components/SyncManager";
 
-const App = () => {
+function App() {
   return (
-    <div className="app">
-      <Navbar />
-      
-      <main className="main-content">
+    <AuthProvider>
+      <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/inventory" element={<InventoryPage />} />
+          <Route
+            path="/inventory/:inventoryId"
+            element={
+              <>
+                <InventoryTable />
+                <SyncManager />
+              </>
+            }
+          />
+          {/* ... outras rotas */}
         </Routes>
-      </main>
-    </div>
-  )
+      </Router>
+    </AuthProvider>
+  );
 }
-
-export default App

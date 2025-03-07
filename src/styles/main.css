@@ -177,3 +177,104 @@ input[type="number"] {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.upload-button.loading {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.upload-progress {
+  margin-top: 10px;
+  height: 3px;
+  background: #ddd;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.stock-empty {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.error-banner {
+  background: #dc3545;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.loading {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* main.css */
+.sync-manager {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  max-width: 500px;
+}
+
+.invite-form {
+  display: flex;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+.invite-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.invite-button {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.invite-button:disabled {
+  background: #90caf9;
+  cursor: not-allowed;
+}
+
+.message {
+  padding: 10px;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+.message.success {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.message.error {
+  background: #ffcdd2;
+  color: #c62828;
+}
+
+.collaborators-list {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
