@@ -1,8 +1,13 @@
 import React from "react";
 import { read, utils } from "xlsx";
+import { db } from "../firebase/firebase"; // Importe a instância do Firestore
+import { collection, addDoc, doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import "../styles/main.css";
 
 const FileUploader = ({ onUploadSuccess }) => {
+  const auth = getAuth();
+
   const processJSONData = (jsonData) => {
     return Object.entries(jsonData).map(([material, valor], index) => ({
       id: index + 1,
@@ -29,7 +34,7 @@ const FileUploader = ({ onUploadSuccess }) => {
     const file = e.target.files[0];
     const reader = new FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
         let processedData;
         if (file.name.endsWith(".xlsx")) {
@@ -41,7 +46,25 @@ const FileUploader = ({ onUploadSuccess }) => {
           const jsonData = JSON.parse(e.target.result);
           processedData = processJSONData(jsonData);
         }
-        onUploadSuccess(processedData);
+
+        // 1. Criar novo inventário no Firestore
+        const inventoryRef = await addDoc(collection(db, "inventories"), {
+          name: file.name.replace(/\.[^/.]+$/, ""), // Remove a extensão do nome
+          owner: auth.currentUser.uid,
+          collaborators: [auth.currentUser.uid],
+          items: processedData,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+        // 2. Atualizar o documento do usuário
+        await updateDoc(doc(db, "users", auth.currentUser.uid), {
+          inventories: arrayUnion(inventoryRef.id),
+        });
+
+        // 3. Retornar o ID do inventário criado
+        onUploadSuccess(inventoryRef.id);
+
       } catch (error) {
         console.error("Erro no processamento:", error);
       }

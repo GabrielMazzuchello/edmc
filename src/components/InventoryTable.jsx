@@ -1,6 +1,8 @@
 import React from "react";
 import "../styles/main.css";
 
+
+
 const InventoryTable = ({ items, onSubtract, onReset, onRemove }) => {
   const handleKeyDown = (e, item) => {
     if (e.key === "Enter") {
