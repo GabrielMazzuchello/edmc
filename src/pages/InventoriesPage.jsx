@@ -1,30 +1,35 @@
-// InventoriesPage.jsx
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db, auth } from '../services/firebase';
 import { Link } from 'react-router-dom';
+import '../styles/main.css';
 
 const InventoriesPage = () => {
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchInventories = async () => {
       try {
         const q = query(
           collection(db, 'inventories'),
-          where('collaborators', 'array-contains', auth.currentUser.uid)
+          where('collaborators', 'array-contains', auth.currentUser.uid),
+          orderBy('updatedAt', 'desc')
         );
         
         const querySnapshot = await getDocs(q);
         const inventoriesData = querySnapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate(),
+          updatedAt: doc.data().updatedAt?.toDate()
         }));
         
         setInventories(inventoriesData);
       } catch (error) {
-        console.error('Erro ao carregar inventários:', error);
+        setError('Erro ao carregar inventários');
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -33,12 +38,13 @@ const InventoriesPage = () => {
     fetchInventories();
   }, []);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return <div className="loading">⏳ Carregando...</div>;
+  if (error) return <div className="error">❌ {error}</div>;
 
   return (
     <div className="inventories-page">
-      <h1>Meus Inventários</h1>
-      <div className="inventories-list">
+      <h1>📚 Meus Inventários</h1>
+      <div className="inventories-grid">
         {inventories.map(inventory => (
           <Link 
             key={inventory.id} 
@@ -46,11 +52,14 @@ const InventoriesPage = () => {
             className="inventory-card"
           >
             <h3>{inventory.name || 'Inventário Sem Nome'}</h3>
-            <p>Criado em: {new Date(inventory.createdAt?.toDate()).toLocaleDateString()}</p>
+            <div className="meta-info">
+              <span>🕒 Criado em: {inventory.createdAt?.toLocaleDateString()}</span>
+              <span>✏️ Última atualização: {inventory.updatedAt?.toLocaleDateString()}</span>
+            </div>
           </Link>
         ))}
       </div>
-      <Link to="/inventory/new" className="create-btn">Novo Inventário</Link>
+      <Link to="/inventory/new" className="create-btn">➕ Novo Inventário</Link>
     </div>
   );
 };

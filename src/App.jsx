@@ -6,10 +6,11 @@ import Auth from './components/common/Auth';
 import InventoryPage from './pages/InventoryPage';
 import InventoriesPage from './pages/InventoriesPage';
 
+
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/EDMC">
         <div className="app">
           <Navbar />
           <main className="main-content">

@@ -14,21 +14,19 @@ const InventoryPage = () => {
     navigate(`/inventory/${newInventoryId}`);
   };
 
-  return (
-    <div className="page-container">
-    
-      {!inventoryId ? (
-        <FileUploader onInventoryCreated={handleInventoryCreated} />
-      ) : (
-        <>
-          <InventoryTable inventoryId={inventoryId} />
-          <SyncManager inventoryId={inventoryId} />
-        </>
-      )}
-
-      {error && <div className="error">{error}</div>}
-    </div>
-  );
-};
+  // Adicione o SyncManager abaixo da tabela
+return (
+  <div className="page-container">
+    {!inventoryId ? (
+      <FileUploader onInventoryCreated={handleInventoryCreated} />
+    ) : (
+      <>
+        <InventoryTable inventoryId={inventoryId} />
+        <SyncManager inventoryId={inventoryId} />
+      </>
+    )}
+  </div>
+);
+}
 
 export default InventoryPage;
