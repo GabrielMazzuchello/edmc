@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: '/EDMC/', // Deve corresponder EXATAMENTE ao nome do repositório
+  base: "/edmc/", // Deve corresponder EXATAMENTE ao nome do repositório
+  chunkSizeWarningLimit: 1500,
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets'
-  }
-})
+    outDir: "dist",
+    assetsDir: "assets",
+  },
+});
