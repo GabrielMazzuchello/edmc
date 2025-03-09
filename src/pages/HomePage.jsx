@@ -7,6 +7,8 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <h1>Bem-vindo ao EDMC - Sistema de Gerenciamento de Inventários</h1>
+      <h4>Feito por GabrielDesuBR</h4>
+      <br />
 
       <div className="beta-alert">
         <h3>⚠️ Aviso Importante: Versão Beta</h3>
