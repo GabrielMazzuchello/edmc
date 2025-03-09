@@ -19,14 +19,25 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="nav-menu">
-          {currentUser ? (
-            <>
-              <Link to="/" className="logo">
-                EDTM
-              </Link>
+          {/* Logo à esquerda */}
+          <div className="nav-left">
+            <Link to="/" className="logo">
+              EDTM
+            </Link>
+          </div>
+
+          {/* Link centralizado */}
+          <div className="nav-center">
+            {currentUser && (
               <Link to="/inventories" className="nav-link">
                 📦 Meus Inventários
               </Link>
+            )}
+          </div>
+
+          {/* User container à direita */}
+          <div className="nav-right">
+            {currentUser ? (
               <div className="user-container">
                 <div className="user-info">
                   <span>
@@ -37,12 +48,12 @@ const Navbar = () => {
                   🚪 Sair
                 </button>
               </div>
-            </>
-          ) : (
-            <Link to="/auth" className="nav-link">
-              🔑 Entrar
-            </Link>
-          )}
+            ) : (
+              <Link to="/auth" className="nav-link">
+                🔑 Entrar
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>
