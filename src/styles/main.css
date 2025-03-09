@@ -91,7 +91,6 @@ body {
   justify-content: center;
 }
 
-
 .materials-table {
   flex: 1;
 
@@ -248,13 +247,15 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   background: var(--primary-color);
   color: white;
   border: none;
   border-radius: 6px;
   text-decoration: none;
   transition: filter 0.3s;
+  height: 40px;
+  width: 195px;
 }
 
 .create-btn:hover {
@@ -337,4 +338,49 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+/* Adicione estes estilos */
+.header-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.reload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: filter 0.3s;
+  height: 40px;
+  width: 195px;
+}
+
+.reload-btn:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.reload-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.inventories-functions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 50px;
+  width: 415px;
 }
