@@ -1,19 +1,17 @@
 {
+  "homepage": "https://gabrielmazzuchello.github.io/edmc",
   "name": "edmc",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-
-  "homepage": "https://gabrielmazzuchello.github.io/EDMC",
   "scripts": {
-    "build": "vite build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "dev": "vite",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite preview --host 0.0.0.0 --port $PORT",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
-
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -21,6 +19,7 @@
     "firebase": "^11.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^7.3.0",
     "xlsx": "^0.18.5"
   },
