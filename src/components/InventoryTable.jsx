@@ -72,7 +72,7 @@ const InventoryTable = ({ inventoryId }) => {
             <th>Material</th>
             <th>Total</th>
             <th>Atual</th>
-            <th>Subtrair</th>
+            <th>Entrega</th>
             <th>Ações</th>
           </tr>
         </thead>
