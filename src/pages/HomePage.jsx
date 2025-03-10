@@ -6,7 +6,7 @@ import blocoNotasImg from "../assets/images-readme/blocoNotas.png";
 const HomePage = () => {
   return (
     <div className="home-container">
-      <h1>Bem-vindo ao EDMC - Sistema de Gerenciamento de Inventários</h1>
+      <h1>Bem-vindo ao EDTM - Sistema de Gerenciamento de Inventários sincronizados</h1>
       <h4>Feito por GabrielDesuBR</h4>
       <br />
 
