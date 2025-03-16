@@ -2,10 +2,22 @@ import React, { useEffect, useState } from "react";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
 import "../styles/main.css";
+import ProgressBar from "./ProgressBar";
 
 const InventoryTable = ({ inventoryId }) => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
+
+  // Cálculo do progresso
+  const calculateProgress = () => {
+    const total = items.reduce((acc, item) => acc + item.quantidade, 0);
+    const remaining = items.reduce((acc, item) => acc + item.restante, 0);
+
+    if (total === 0) return 0; // Evita divisão por zero
+
+    const used = total - remaining;
+    return (used / total) * 100;
+  };
 
   useEffect(() => {
     if (!inventoryId) return;
@@ -38,6 +50,7 @@ const InventoryTable = ({ inventoryId }) => {
     }
   };
 
+  // Funções de manipulação mantidas iguais
   const handleSubtract = (id, value) => {
     const newItems = items.map((item) =>
       item.id === id
@@ -62,10 +75,39 @@ const InventoryTable = ({ inventoryId }) => {
     updateInventory(newItems);
   };
 
+  // Cálculo das estatísticas
+  const totalItems = items.reduce((acc, item) => acc + item.quantidade, 0);
+  const remainingItems = items.reduce((acc, item) => acc + item.restante, 0);
+  const usedItems = totalItems - remainingItems;
+  const progress = calculateProgress();
+
   return (
     <div className="inventory-container">
       {error && <div className="error">{error}</div>}
 
+      {/* Barra do Progresso */}
+      <div className="progress-section">
+        <h3>Progresso do Trabalho</h3>
+        <div className="progress-stats">
+          <div>
+            <span className="stat-number">{usedItems.toLocaleString()}</span>
+            <span className="stat-label"> Materiais Usados</span>
+          </div>
+          <div>
+            <span className="stat-number">
+              {remainingItems.toLocaleString()}
+            </span>
+            <span className="stat-label"> Restantes</span>
+          </div>
+          <div>
+            <span className="stat-number">{totalItems.toLocaleString()}</span>
+            <span className="stat-label"> Total</span>
+          </div>
+        </div>
+        <ProgressBar percentage={progress} />
+      </div>
+
+      {/* Tabela de materiais */}
       <table className="materials-table">
         <thead>
           <tr>

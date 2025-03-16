@@ -4,6 +4,7 @@ import FileUploader from "../components/FileUploader";
 import InventoryTable from "../components/InventoryTable";
 import SyncManager from "../components/SyncManager";
 import "../styles/main.css";
+import ProgressBar from "../components/ProgressBar";
 
 const InventoryPage = () => {
   const { inventoryId } = useParams();
@@ -15,18 +16,18 @@ const InventoryPage = () => {
   };
 
   // Adicione o SyncManager abaixo da tabela
-return (
-  <div className="page-container">
-    {!inventoryId ? (
-      <FileUploader onInventoryCreated={handleInventoryCreated} />
-    ) : (
-      <>
-        <InventoryTable inventoryId={inventoryId} />
-        <SyncManager inventoryId={inventoryId} />
-      </>
-    )}
-  </div>
-);
-}
+  return (
+    <div className="page-container">
+      {!inventoryId ? (
+        <FileUploader onInventoryCreated={handleInventoryCreated} />
+      ) : (
+        <>
+          <InventoryTable inventoryId={inventoryId} />
+          <SyncManager inventoryId={inventoryId} />
+        </>
+      )}
+    </div>
+  );
+};
 
 export default InventoryPage;

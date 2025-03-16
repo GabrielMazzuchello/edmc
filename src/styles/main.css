@@ -487,3 +487,49 @@ button:hover {
   max-width: 75%;
 
 }
+
+/* Barra de Progresso */
+.progress-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #2d2d2d;
+  border-radius: 8px;
+}
+
+.progress-container {
+  height: 25px;
+  background: #333;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.progress-stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.progress-hint {
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+  color: #9e9e9e;
+  text-align: center;
+}
