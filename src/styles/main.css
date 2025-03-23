@@ -93,7 +93,6 @@ body {
 
 .materials-table {
   flex: 1;
-
   border-collapse: collapse;
   margin: 25px;
   background: var(--surface-color);
@@ -129,8 +128,23 @@ body {
 
 /* Upload Section */
 .upload-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 110px;
   margin: 2rem 0;
   text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.actions button {
+  white-space: nowrap;
+  padding: 6px 12px;
 }
 
 .upload-button {
@@ -485,7 +499,6 @@ button:hover {
   flex-direction: column;
   align-items: center;
   max-width: 75%;
-
 }
 
 /* Barra de Progresso */
@@ -506,7 +519,7 @@ button:hover {
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
   transition: width 0.5s ease;
 }
 
@@ -517,7 +530,7 @@ button:hover {
   transform: translateY(-50%);
   color: white;
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .progress-stats {
@@ -532,4 +545,250 @@ button:hover {
   font-size: 0.9em;
   color: #9e9e9e;
   text-align: center;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.name-modal {
+  background: #2d2d2d;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.name-modal h3 {
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.name-modal input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1.5rem;
+  background: #1e1e1e;
+  border: 2px solid #3d3d3d;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.name-modal input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.confirm-btn {
+  background: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.3s;
+}
+
+.confirm-btn:hover {
+  filter: brightness(1.1);
+}
+
+.cancel-btn {
+  background: #dc3545;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.3s;
+}
+
+.cancel-btn:hover {
+  filter: brightness(1.1);
+}
+
+/* Upload Section */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.upload-button {
+  background: #1976d2;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: filter 0.3s;
+}
+
+.upload-button:hover {
+  filter: brightness(1.1);
+}
+
+
+/* Ajuste a seção da tabela existente */
+
+.materials-table {
+  max-width: 1000px; /* Largura máxima reduzida */
+  width: 95%; /* Ocupa 95% do container */
+  margin: 15px auto; /* Centraliza a tabela */
+  font-size: 0.95rem; /* Tamanho de fonte menor */
+}
+
+.materials-table th,
+.materials-table td {
+  padding: 8px 10px; /* Padding vertical reduzido */
+  line-height: 1.4; /* Espaçamento entre linhas mais apertado */
+}
+/* Ajuste os inputs na tabela */
+.materials-table input[type="number"] {
+  padding: 6px;
+  width: 70px; /* Largura reduzida do input */
+  min-width: 50px; /* Largura mínima para não quebrar */
+}
+
+/* Adicione estas regras novas */
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 1000px; /* Mesma largura máxima da tabela */
+  margin: 0 auto;
+}
+
+/* Ajuste o cabeçalho */
+.materials-table th {
+  white-space: nowrap; /* Impede quebra de linha nos cabeçalhos */
+  padding: 10px 12px; /* Padding horizontal ligeiramente maior */
+}
+
+/* Torne as células mais compactas */
+.materials-table td {
+  min-width: 80px; /* Largura mínima para conteúdo básico */
+  max-width: 200px; /* Largura máxima para evitar expansão excessiva */
+}
+
+/* Ajuste a seção de adição de itens */
+.add-item-row {
+  grid-template-columns: 3fr 1fr 1fr; /* Proporção mais compacta */
+  gap: 0.5rem; /* Espaço entre elementos reduzido */
+  max-width: 1000px; /* Mesma largura máxima da tabela */
+  margin: 15px auto;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+  .materials-table {
+    width: 100%;
+    margin: 10px;
+    font-size: 0.8125rem; /* Fonte ainda menor em mobile */
+  }
+
+  .materials-table th,
+  .materials-table td {
+    padding: 6px 8px;
+  }
+
+  .add-item-row {
+    grid-template-columns: 1fr; /* Empilha elementos em mobile */
+    gap: 0.3rem;
+  }
+}
+
+/* Se estiver usando a classe .page-container */
+.page-container {
+  margin: 55px;
+  max-width: 1000px; /* Limitar largura do container */
+  padding: 0 15px; /* Padding lateral reduzido */
+}
+
+/* Ajustes para a tabela compacta */
+.compact .progress-stats {
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.add-item-container {
+  padding: 0.5rem;
+  background: var(--surface-color);
+}
+
+.add-item-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.add-item-row input {
+  padding: 0.5rem;
+  height: 36px;
+}
+
+.add-item-button {
+  height: 36px;
+  padding: 0 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .add-item-row {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .materials-table td,
+  .materials-table th {
+    padding: 6px 8px;
+  }
 }

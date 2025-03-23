@@ -9,54 +9,13 @@ const InventoryTable = ({ inventoryId }) => {
   const [error, setError] = useState("");
   const [newItem, setNewItem] = useState({ material: "", quantidade: "" });
 
-  const handleAddItem = async () => {
-    if (!newItem.material || !newItem.quantidade) {
-      alert("Preencha todos os campos!");
-      return;
-    }
-
-    try {
-      const newItemData = {
-        id: Date.now().toString(),
-        material: newItem.material,
-        quantidade: Number(newItem.quantidade),
-        restante: Number(newItem.quantidade),
-      };
-
-      const updatedItems = [...items, newItemData];
-      await updateDoc(doc(db, "inventories", inventoryId), {
-        items: updatedItems,
-        updatedAt: new Date(),
-      });
-
-      setNewItem({ material: "", quantidade: "" });
-    } catch (error) {
-      console.error("Erro ao adicionar item:", error);
-      alert("Erro ao adicionar item");
-    }
-  };
-
-  // Cálculo do progresso
-  const calculateProgress = () => {
-    const total = items.reduce((acc, item) => acc + item.quantidade, 0);
-    const remaining = items.reduce((acc, item) => acc + item.restante, 0);
-
-    if (total === 0) return 0; // Evita divisão por zero
-
-    const used = total - remaining;
-    return (used / total) * 100;
-  };
-
+  // Firebase operations
   useEffect(() => {
     if (!inventoryId) return;
 
     const unsubscribe = onSnapshot(
       doc(db, "inventories", inventoryId),
-      (doc) => {
-        if (doc.exists()) {
-          setItems(doc.data().items || []);
-        }
-      },
+      (doc) => doc.exists() && setItems(doc.data().items || []),
       (error) => {
         setError("Erro ao carregar inventário");
         console.error("Erro:", error);
@@ -78,36 +37,56 @@ const InventoryTable = ({ inventoryId }) => {
     }
   };
 
-  // Funções de manipulação mantidas iguais
-  const handleSubtract = (id, value) => {
-    const newItems = items.map((item) =>
-      item.id === id
-        ? {
-            ...item,
-            restante: Math.max(0, item.restante - value),
-          }
-        : item
-    );
-    updateInventory(newItems);
+  // Handlers
+  const handleAddItem = async () => {
+    if (!newItem.material || !newItem.quantidade) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    try {
+      const newItemData = {
+        id: Date.now().toString(),
+        material: newItem.material,
+        quantidade: Number(newItem.quantidade),
+        restante: Number(newItem.quantidade),
+      };
+
+      await updateInventory([...items, newItemData]);
+      setNewItem({ material: "", quantidade: "" });
+    } catch (error) {
+      console.error("Erro ao adicionar item:", error);
+      alert("Erro ao adicionar item");
+    }
   };
 
-  const handleReset = (id) => {
-    const newItems = items.map((item) =>
+  const handleSubtract = async (id, value) => {
+    const newItems = items.map((item) => 
+      item.id === id ? { 
+        ...item, 
+        restante: Math.max(0, item.restante - value) 
+      } : item
+    );
+    await updateInventory(newItems);
+  };
+
+  const handleReset = async (id) => {
+    const newItems = items.map((item) => 
       item.id === id ? { ...item, restante: 0 } : item
     );
-    updateInventory(newItems);
+    await updateInventory(newItems);
   };
 
-  const handleRemove = (id) => {
+  const handleRemove = async (id) => {
     const newItems = items.filter((item) => item.id !== id);
-    updateInventory(newItems);
+    await updateInventory(newItems);
   };
 
-  // Cálculo das estatísticas
+  // Progress calculations
   const totalItems = items.reduce((acc, item) => acc + item.quantidade, 0);
   const remainingItems = items.reduce((acc, item) => acc + item.restante, 0);
   const usedItems = totalItems - remainingItems;
-  const progress = calculateProgress();
+  const progress = totalItems > 0 ? (usedItems / totalItems) * 100 : 0;
 
   return (
     <div className="inventory-container">
@@ -135,86 +114,93 @@ const InventoryTable = ({ inventoryId }) => {
         <ProgressBar percentage={progress} />
       </div>
 
-      {/* Tabela de materiais */}
-      <table className="materials-table">
-        <thead>
-          <tr>
-            <th>Material</th>
-            <th>Total</th>
-            <th>Atual</th>
-            <th>Entrega</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td>{item.material}</td>
-              <td>{item.quantidade}</td>
-              <td>{item.restante}</td>
-              <td>
-                <input
-                  type="number"
-                  min="0"
-                  max={item.restante}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      const value = parseInt(e.target.value);
-                      if (!isNaN(value) && value > 0) {
-                        handleSubtract(item.id, value);
-                        e.target.value = "";
+      {/* Materials Table */}
+      <div className="table-container">
+        <table className="materials-table">
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Total</th>
+              <th>Atual</th>
+              <th>Entrega</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id}>
+                <td>{item.material}</td>
+                <td>{item.quantidade}</td>
+                <td>{item.restante}</td>
+                <td>
+                  <input
+                    type="number"
+                    min="0"
+                    max={item.restante}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        const value = parseInt(e.target.value);
+                        if (!isNaN(value) && value > 0) {
+                          handleSubtract(item.id, value);
+                          e.target.value = "";
+                        }
                       }
-                    }
-                  }}
-                />
-              </td>
-              <td className="actions">
-                <button
-                  onClick={() => handleReset(item.id)}
-                  className="reset-btn"
-                >
-                  Zerar
-                </button>
-                <button
-                  onClick={() => handleRemove(item.id)}
-                  className="remove-btn"
-                >
-                  Remover
-                </button>
+                    }}
+                  />
+                </td>
+                <td>
+                  <div className="action-buttons">
+                    <button 
+                      onClick={() => handleReset(item.id)}
+                      className="reset-btn"
+                    >
+                      Zerar
+                    </button>
+                    <button
+                      onClick={() => handleRemove(item.id)}
+                      className="remove-btn"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+
+          {/* Add Item Section */}
+          <tfoot>
+            <tr>
+              <td colSpan="5">
+                <div className="add-item-container">
+                  <div className="add-item-row">
+                    <input
+                      type="text"
+                      placeholder="Novo material"
+                      value={newItem.material}
+                      onChange={(e) => setNewItem({...newItem, material: e.target.value})}
+                    />
+                    <input
+                      type="number"
+                      placeholder="Qtd."
+                      min="1"
+                      value={newItem.quantidade}
+                      onChange={(e) => setNewItem({...newItem, quantidade: e.target.value})}
+                    />
+                    <button 
+                      onClick={handleAddItem}
+                      className="add-item-button"
+                    >
+                      ➕ Adicionar
+                    </button>
+                  </div>
+                </div>
               </td>
             </tr>
-          ))}
-        </tbody>
-        <div className="inventory-add-container">
-          {/* Linha para adicionar novos itens */}
-          <div className="add-item-row">
-            <input
-              type="text"
-              placeholder="Nome do material"
-              value={newItem.material}
-              onChange={(e) =>
-                setNewItem({ ...newItem, material: e.target.value })
-              }
-            />
-            <input
-              type="number"
-              placeholder="Quantidade"
-              min="1"
-              value={newItem.quantidade}
-              onChange={(e) =>
-                setNewItem({ ...newItem, quantidade: e.target.value })
-              }
-            />
-            <button
-              onClick={handleAddItem}
-              className="add-item-button"
-              title="Adicionar novo item"
-            >
-              ➕ Adicionar
-            </button>
-          </div>
-        </div>
-      </table>
+          </tfoot>
+        </table>
+      </div>
     </div>
   );
 };
