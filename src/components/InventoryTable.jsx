@@ -39,20 +39,50 @@ const InventoryTable = ({ inventoryId }) => {
 
   // Handlers
   const handleAddItem = async () => {
-    if (!newItem.material || !newItem.quantidade) {
+    if (!newItem.material.trim() || !newItem.quantidade) {
       alert("Preencha todos os campos!");
       return;
     }
-
+  
     try {
-      const newItemData = {
-        id: Date.now().toString(),
-        material: newItem.material,
-        quantidade: Number(newItem.quantidade),
-        restante: Number(newItem.quantidade),
-      };
-
-      await updateInventory([...items, newItemData]);
+      const normalizedMaterial = newItem.material.trim().toLowerCase();
+      const newQuantity = Number(newItem.quantidade);
+      
+      // Verifica se o material já existe
+      const existingItemIndex = items.findIndex(item => 
+        item.material.trim().toLowerCase() === normalizedMaterial
+      );
+  
+      let updatedItems;
+  
+      if (existingItemIndex !== -1) {
+        // Atualiza o item existente
+        updatedItems = items.map((item, index) => {
+          if (index === existingItemIndex) {
+            return {
+              ...item,
+              quantidade: item.quantidade + newQuantity,
+              restante: item.restante + newQuantity
+            };
+          }
+          return item;
+        });
+      } else {
+        // Cria novo item
+        const newItemData = {
+          id: Date.now().toString(),
+          material: newItem.material.trim(),
+          quantidade: newQuantity,
+          restante: newQuantity
+        };
+        updatedItems = [...items, newItemData];
+      }
+  
+      await updateDoc(doc(db, "inventories", inventoryId), {
+        items: updatedItems,
+        updatedAt: new Date()
+      });
+  
       setNewItem({ material: "", quantidade: "" });
     } catch (error) {
       console.error("Erro ao adicionar item:", error);
