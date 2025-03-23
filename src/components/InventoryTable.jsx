@@ -1,12 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
-import "../styles/main.css";
 import ProgressBar from "./ProgressBar";
+import "../styles/main.css";
 
 const InventoryTable = ({ inventoryId }) => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
+  const [newItem, setNewItem] = useState({ material: "", quantidade: "" });
+
+  const handleAddItem = async () => {
+    if (!newItem.material || !newItem.quantidade) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    try {
+      const newItemData = {
+        id: Date.now().toString(),
+        material: newItem.material,
+        quantidade: Number(newItem.quantidade),
+        restante: Number(newItem.quantidade),
+      };
+
+      const updatedItems = [...items, newItemData];
+      await updateDoc(doc(db, "inventories", inventoryId), {
+        items: updatedItems,
+        updatedAt: new Date(),
+      });
+
+      setNewItem({ material: "", quantidade: "" });
+    } catch (error) {
+      console.error("Erro ao adicionar item:", error);
+      alert("Erro ao adicionar item");
+    }
+  };
 
   // Cálculo do progresso
   const calculateProgress = () => {
@@ -157,6 +185,35 @@ const InventoryTable = ({ inventoryId }) => {
             </tr>
           ))}
         </tbody>
+        <div className="inventory-add-container">
+          {/* Linha para adicionar novos itens */}
+          <div className="add-item-row">
+            <input
+              type="text"
+              placeholder="Nome do material"
+              value={newItem.material}
+              onChange={(e) =>
+                setNewItem({ ...newItem, material: e.target.value })
+              }
+            />
+            <input
+              type="number"
+              placeholder="Quantidade"
+              min="1"
+              value={newItem.quantidade}
+              onChange={(e) =>
+                setNewItem({ ...newItem, quantidade: e.target.value })
+              }
+            />
+            <button
+              onClick={handleAddItem}
+              className="add-item-button"
+              title="Adicionar novo item"
+            >
+              ➕ Adicionar
+            </button>
+          </div>
+        </div>
       </table>
     </div>
   );
