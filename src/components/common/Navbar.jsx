@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../services/firebase";
 import "../../styles/main.css";
+import logo from "../../assets/EDTMS-logo.jpeg";
 
 const Navbar = () => {
   const { currentUser } = useAuth();
@@ -22,7 +23,7 @@ const Navbar = () => {
           {/* Logo à esquerda */}
           <div className="nav-left">
             <Link to="/" className="logo">
-              EDTM
+              <img className="navbar_logo-img" src={logo} alt="Logo do EDTMS" />
             </Link>
           </div>
 

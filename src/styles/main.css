@@ -464,14 +464,22 @@ button:hover {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
   transition: background 0.3s;
 }
 
-.logo:hover {
+.navbar_logo-img {
+  max-height: 100px;
+  max-width: 200px;
+  border-radius: 20px;
+}
+
+.nav-left:hover {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 75px;
+  transition: width 0.3s ease;
   background: var(--hover-bg);
 }
 

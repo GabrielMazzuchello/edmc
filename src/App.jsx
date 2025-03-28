@@ -10,7 +10,7 @@ import InventoriesPage from './pages/InventoriesPage';
 const App = () => {
   return (
     <AuthProvider>
-      <Router basename="/edmc">
+      <Router basename="/EDTMS">
         <div className="app">
           <Navbar />
           <main className="main-content">
