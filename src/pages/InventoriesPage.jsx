@@ -73,7 +73,7 @@ const InventoriesPage = () => {
     if (auth.currentUser) fetchInventories();
   }, []);
 
-  if (loading) return <div className="loading">⏳ Carregando...</div>;
+  if (loading) return <div className="loading"><img src="https://edassets.org/static/img/svg/EDLoader1.svg" alt="" />Carregando...</div>;
   if (error) return <div className="error">❌ {error}</div>;
 
   return (
