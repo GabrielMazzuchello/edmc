@@ -43,18 +43,18 @@ const InventoryTable = ({ inventoryId }) => {
       alert("Preencha todos os campos!");
       return;
     }
-  
+
     try {
       const normalizedMaterial = newItem.material.trim().toLowerCase();
       const newQuantity = Number(newItem.quantidade);
-      
+
       // Verifica se o material já existe
-      const existingItemIndex = items.findIndex(item => 
-        item.material.trim().toLowerCase() === normalizedMaterial
+      const existingItemIndex = items.findIndex(
+        (item) => item.material.trim().toLowerCase() === normalizedMaterial
       );
-  
+
       let updatedItems;
-  
+
       if (existingItemIndex !== -1) {
         // Atualiza o item existente
         updatedItems = items.map((item, index) => {
@@ -62,7 +62,7 @@ const InventoryTable = ({ inventoryId }) => {
             return {
               ...item,
               quantidade: item.quantidade + newQuantity,
-              restante: item.restante + newQuantity
+              restante: item.restante + newQuantity,
             };
           }
           return item;
@@ -73,16 +73,16 @@ const InventoryTable = ({ inventoryId }) => {
           id: Date.now().toString(),
           material: newItem.material.trim(),
           quantidade: newQuantity,
-          restante: newQuantity
+          restante: newQuantity,
         };
         updatedItems = [...items, newItemData];
       }
-  
+
       await updateDoc(doc(db, "inventories", inventoryId), {
         items: updatedItems,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       });
-  
+
       setNewItem({ material: "", quantidade: "" });
     } catch (error) {
       console.error("Erro ao adicionar item:", error);
@@ -91,20 +91,31 @@ const InventoryTable = ({ inventoryId }) => {
   };
 
   const handleSubtract = async (id, value) => {
-    const newItems = items.map((item) => 
-      item.id === id ? { 
-        ...item, 
-        restante: Math.max(0, item.restante - value) 
-      } : item
+    const newItems = items.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            restante: Math.max(0, item.restante - value),
+          }
+        : item
     );
     await updateInventory(newItems);
   };
 
   const handleReset = async (id) => {
-    const newItems = items.map((item) => 
+    const newItems = items.map((item) =>
       item.id === id ? { ...item, restante: 0 } : item
     );
     await updateInventory(newItems);
+  };
+
+  // Função para normalizar o nome do material
+  const normalizeMaterial = (str) => {
+    return str
+      .normalize("NFD") // Remove acentos
+      .replace(/[\u0300-\u036f]/g, "") // Remove caracteres diacríticos
+      .toLowerCase() // Tudo para minúsculas
+      .replace(/(^\w{1})|(\s+\w{1})/g, (letra) => letra.toUpperCase()); // Primeira letra maiúscula
   };
 
   const handleRemove = async (id) => {
@@ -156,7 +167,7 @@ const InventoryTable = ({ inventoryId }) => {
               <th>Ações</th>
             </tr>
           </thead>
-          
+
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
@@ -181,7 +192,7 @@ const InventoryTable = ({ inventoryId }) => {
                 </td>
                 <td>
                   <div className="action-buttons">
-                    <button 
+                    <button
                       onClick={() => handleReset(item.id)}
                       className="reset-btn"
                     >
@@ -209,19 +220,23 @@ const InventoryTable = ({ inventoryId }) => {
                       type="text"
                       placeholder="Novo material"
                       value={newItem.material}
-                      onChange={(e) => setNewItem({...newItem, material: e.target.value})}
+                      onChange={(e) =>
+                        setNewItem({
+                          ...newItem,
+                          material: normalizeMaterial(e.target.value),
+                        })
+                      }
                     />
                     <input
                       type="number"
                       placeholder="Qtd."
                       min="1"
                       value={newItem.quantidade}
-                      onChange={(e) => setNewItem({...newItem, quantidade: e.target.value})}
+                      onChange={(e) =>
+                        setNewItem({ ...newItem, quantidade: e.target.value })
+                      }
                     />
-                    <button 
-                      onClick={handleAddItem}
-                      className="add-item-button"
-                    >
+                    <button onClick={handleAddItem} className="add-item-button">
                       ➕ Adicionar
                     </button>
                   </div>

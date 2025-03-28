@@ -120,7 +120,8 @@ const HomePage = () => {
             <h4>
               Após isso você pode levar as fotos para o chatgpt ou deepseek e
               pedir para converter para json
-            </h4><br />
+            </h4>
+            <br />
 
             <h3>Conversão para JSON</h3>
             <p>
@@ -145,11 +146,21 @@ const HomePage = () => {
               </div>
               Prompt: <br />
               <code>
-                Converta esta lista de materiais para JSON com as chaves sendo
-                os itens
+                Converta as tabelas dos arquivos fornecidos em um único objeto
+                JSON, seguindo estas regras: 1. Use os nomes dos materiais como
+                chaves, sem acentuação. 2. A primeira letra de cada palavra
+                principal deve ser maiúscula, exceto preposições/artigos (ex:
+                "de", "e"). 3. Mantenha os valores numéricos como inteiros
+                (exemplo: "2.466" vira 2466). Exemplo de conversão: -
+                "Purificadores de água" → "Purificadores de Agua" - "Membrana de
+                isolamento" → "Membrana de Isolamento" - "Frutas e verduras" →
+                "Frutas e Verduras"
               </code>
             </p>
-            <p>Agora você salva o arquivo como na imagem abaixo e é só carregar no site na opção "Carregar arquivo" para criar o inventário</p>
+            <p>
+              Agora você salva o arquivo como na imagem abaixo e é só carregar
+              no site na opção "Carregar arquivo" para criar o inventário
+            </p>
             <img
               src={blocoNotasImg}
               alt="Exemplo bloco de notas"
