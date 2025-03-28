@@ -12,6 +12,10 @@
 }
 
 /* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -474,6 +478,15 @@ button:hover {
   border-radius: 20px;
 }
 
+.nav-left {
+  height: 75px;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
 .nav-left:hover {
   display: flex;
   flex-direction: column;
@@ -799,4 +812,217 @@ button:hover {
   .materials-table th {
     padding: 6px 8px;
   }
+}
+
+.home_link {
+  text-decoration: none;
+  color: var(--text-primary);
+  background-color: #000;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+/* Ajuste para o container da home */
+.home-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.home-container h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.home-container h5 {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+}
+
+.beta-alert {
+  background: #332f1f;
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.beta-alert h3 {
+  color: #ffd700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guide-section {
+  background: var(--surface-color);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 3rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.guide-section h2 {
+  color: var(--secondary-color);
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.step {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  align-items: center;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.step img:hover {
+  transform: scale(1.02);
+}
+
+.step h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.step p {
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.quick-start {
+  text-align: center;
+  margin: 4rem 0;
+}
+
+.cta-button {
+  background: var(--primary-color);
+  color: white;
+  padding: 1.2rem 2.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+}
+
+code {
+  background: var(--bg-color);
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  display: inline-block;
+  margin: 0.5rem 0;
+  border: 1px solid var(--border-color);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .home-container h1 {
+    font-size: 2rem;
+  }
+  
+  .step {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .step-content {
+    order: 2;
+  }
+  
+  .guide-section {
+    padding: 1.5rem;
+  }
+  
+  .cta-button {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.tool-card {
+  background: var(--surface-color);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: transform 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.tool-card:hover {
+  transform: translateY(-3px);
+  background: var(--hover-bg);
+}
+
+/* Adicione ao seu CSS */
+.feature-list {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.feature-list li {
+  margin: 0.8rem 0;
+  line-height: 1.6;
+}
+
+.highlight {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.image-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.small-img {
+  max-width: 300px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.tip-box {
+  background: rgba(41, 98, 255, 0.1);
+  border-left: 4px solid var(--primary-color);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
 }
